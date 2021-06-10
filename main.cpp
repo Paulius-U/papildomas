@@ -48,11 +48,11 @@ int main()
 			}
 		}
         cout << string(100, '=') << endl;
-		cout << "\t\t\t\tURLS:" << endl;
+		cout << "\t\t\t\tURL:" << endl;
 		cout << string(100, '=') << endl;
 
         out << string(100, '=') << endl;
-		out << "\t\t\t\tURLS:" << endl;
+		out << "\t\t\t\tURL:" << endl;
 		out << string(100, '=') << endl;
 
 		vector<string> URLS = FaindURL();
