@@ -30,6 +30,8 @@ URL radimas ir isvedimas
 
 parsisiuskite sios programos faila.zip
 
+isskleiskite faila.zip
+
 pasileiskite programa per c++ programavimo prietaisa (codeblock ar VS code) 
 
 paleiskite programa per terminala
