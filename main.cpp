@@ -11,39 +11,37 @@ using namespace std;
 typedef unsigned int uint;
 typedef map <string, vector<uint> > MAP; 
 
-void CleanString(string& eil);
 bool In_String(MAP& map_of_words, string& val);
-MAP Read();
 void Increase(MAP & Words, string & word, uint & index);
 vector<string> FaindURL();
 void chouse_URL(string line, vector<string>& URLS);
+MAP Read();
 
 int main()
 {
-    int random = 1;
     try
     {
         MAP Words = Read();
         MAP::iterator it = Words.begin();
 
-        ofstream out("Rezultatai.txt");
-		for(const auto& x : Words)
+        ofstream R("Rezultatai.txt");
+		for(const auto& a : Words)
 		{
-			if (x.first.size() >= random) 
+			if (a.first.size() >= 1) 
             {
-				out << "Word |" << x.first + " \t\t" << "| have been repeated " << x.second.size() << " times "; 
-                if(x.second.size() > 1) out << " In lines: ";
-				cout <<"Word |"<< x.first+" \t\t" << "| have been repeated " << x.second.size() << " times "; 
-                if(x.second.size() > 1) cout << " In lines: ";
-				for (const auto& a : x.second) 
+				R << "Word |" << a.first + " \t\t" << "| have been repeated " << a.second.size() << " times "; 
+                if(a.second.size() > 1) R << " In lines: ";
+				cout <<"Word |"<< a.first+" \t\t" << "| have been repeated " << a.second.size() << " times "; 
+                if(a.second.size() > 1) cout << " In lines: ";
+				for (const auto& b : a.second) 
                 {
-                    if(a != 1)
+                    if(b > 1)
                     {
-                        out << a << " ";
-                        cout << a << " ";                        
+                        R << b << " ";
+                        cout << b << " ";                        
                     }
 				}
-				out << endl;
+				R << endl;
 				cout << endl;
 			}
 		}
@@ -51,25 +49,25 @@ int main()
 		cout << "\t\t\t\tURL:" << endl;
 		cout << string(100, '=') << endl;
 
-        out << string(100, '=') << endl;
-		out << "\t\t\t\tURL:" << endl;
-		out << string(100, '=') << endl;
+        R << string(100, '=') << endl;
+		R << "\t\t\t\tURL:" << endl;
+		R << string(100, '=') << endl;
 
-		vector<string> URLS = FaindURL();
-		if (URLS.empty()) 
+		vector<string> URL = FaindURL();
+		if (URL.empty()) 
         {
 			cout << "Error" << endl;
 		}
 		else 
         {
-			for (const auto& url : URLS)
+			for (const auto& url : URL)
 			{
 				cout << url << endl;
-				out << url << endl;
+				R << url << endl;
 			}
 		}
 		cout << string(100, '=') << endl;
-        out << string(100, '=') << endl;
+        R << string(100, '=') << endl;
     }
     catch(const exception& e)
     {
@@ -82,50 +80,42 @@ void Increase(MAP & Words, string & word, uint & index)
 	MAP::iterator it = Words.begin();
 	while (it != Words.end())
 	{
-		if (it->first == word) 
+		if (it -> first == word) 
         {
-			it->second.push_back(index + 1);
+			it -> second.push_back(index + 1);
 			break;
 		}
 		++it;
 	}
 }
 
-void CleanString(string& eil)
-{
-	transform(eil.begin(), eil.end(), eil.begin(), ::tolower);Increase;
-	regex reg("\\W");
-	eil = regex_replace(eil, reg, " ");
-
-}
-
 MAP Read()
 {
-	ifstream in;
-    in.open("failas.txt");
+	ifstream D;
+    D.open("failas.txt");
     cout << "\n Fail info: \n\n";
-	cout << std::string(100, '=') << endl;
+	cout << string(100, '=') << endl;
 	MAP Words;
 	string line;
-    int url = 1;
-	for (uint i = 0; !in.eof(); ++i) 
+	for (uint i = 0; !D.eof(); ++i) 
     {
-		getline(in, line, '\n');                                                   
-		CleanString(line);                                                              
+		getline(D, line, '\n');       
+
+		transform(line.begin(), line.end(), line.begin(), ::tolower);Increase;
+		regex reg("\\W");
+		line = regex_replace(line, reg, " ");                                                             
 
 		stringstream ss(line);
 		string word;
 		while (ss >> word) 
         {
-			if (!In_String(Words, word)) 
-            {                                       
+			if (In_String(Words, word)) Increase(Words, word, i);	
+			else 
+			{                                       
 				vector<uint> init{ 1 };
 				Words.insert(MAP::value_type(word, init));
 			}
-			else 
-            {
-				Increase(Words, word, i);
-			}
+
 		}
 		line.clear();
 	}
@@ -138,7 +128,7 @@ bool In_String(MAP& map_of_words, string& val)
 	MAP::iterator it = map_of_words.begin();
 	while (it != map_of_words.end())
 	{
-		if (it->first == val)
+		if (it -> first == val)
 			return true;
 		++it;
 	}
@@ -148,15 +138,15 @@ bool In_String(MAP& map_of_words, string& val)
 vector<string> FaindURL() 
 {
 
-	ifstream failas("failas.txt");;
-	vector<string> URLS;
+	ifstream failas("failas.txt");
+	vector<string> URL;
 	string line;
 	for (uint i = 0; !failas.eof(); ++i) 
     {
 		getline (failas, line, '\n');
-		chouse_URL(line, URLS);
+		chouse_URL(line, URL);
 	}
-	return URLS;
+	return URL;
 }
 
 void chouse_URL(string line, vector<string>& URLS) 
